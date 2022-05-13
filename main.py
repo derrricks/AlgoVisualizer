@@ -90,6 +90,17 @@ def main():
             if event.type == pygame.QUIT: # clickiing red exit corner button
                 run = False
 
+            if event.type != pygame.KEYDOWN:
+                continue
+
+            if event.key == pygame.K_r: # if r-key is pressed
+                lst = generate_starting_list(n, min_value, max_value)
+                panel.set_list(lst) 
+
+            if event.key == pygame.K_q: # quit if q-key pressed
+                run = False
+
+
     pygame.quit()
 
 if __name__ == "__main__":
