@@ -8,8 +8,14 @@ class Panel:
     white = 255, 255, 255
     green = 0, 255, 0
     red = 255, 0, 0
-    grey = 128, 128, 128
+
     background_color = white
+
+    greys = [
+        (128, 128, 128),
+        (160, 160, 160),
+        (192, 192, 192)  
+    ]
 
     # values used when scaling each of the bars 
     side_padding = 100
@@ -45,23 +51,40 @@ def generate_starting_list(n, min_value, max_value):
 
     return lst
 
+# method used to draw on the panel
+def draw(panel):
+    panel.window.fill(panel.background_color)
+    draw_list(panel)
+    pygame.display.update()
+
+
+def draw_list(panel):
+    lst = panel.lst
+
+    for i, val in enumerate(lst):
+        x = panel.start_x + i * panel.scale_width
+        y = panel.height - (val - panel.min_value) * panel.scale_height
+
+        color = panel.greys[i % 3]
+        pygame.draw.rect(panel.window, color, (x, y, panel.scale_width, panel.height))
+
 
 # main method
 def main():
     run = True
     clock = pygame.time.Clock() # regulate how fast the program will run
 
-    n = 50
-    min_value = 0
+    n = 50 # number of columns to sort
+    min_value = 0 
     max_value = 100
 
     lst = generate_starting_list(n, min_value, max_value)
-    draw_info = Panel(800, 600, lst)
+    panel = Panel(800, 600, lst)
 
     while run:
         clock.tick(60) # max number of times loop can run per second
 
-        pygame.display.update()
+        draw(panel)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT: # clickiing red exit corner button
